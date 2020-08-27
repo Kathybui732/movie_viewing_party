@@ -1,0 +1,37 @@
+<section class="discover-movies">
+  <%= button_to "Discover Movies", discover_index_path, method: :get %>
+</section>
+
+<section class="friends">
+  <h1>Friends</h1>
+  <% if current_user.friends.empty? %>
+    <%= tag.p "You currently have no friends" %>
+  <% else %>
+    <% current_user.friends.each do |friend| %>
+      <%= tag.p friend.name %>
+    <% end %>
+  <% end %>
+
+  <%= form_tag "/friendships", method: :post do %>
+    <%= label_tag :friends_email, "Search for Friends by Email" %><br/>
+    <%= text_field_tag :friends_email %>
+    <%= submit_tag "Add Friend" %>
+  <% end %>
+
+</section>
+
+<section class="viewing-party">
+  <h1>Viewing Parties</h1>
+  <% unless @parties.empty? %>
+    <div class="party-container">
+      <% @parties.each do |party| %>
+      <div class="party" id="party-<%= party.id %>">
+        <%= tag.p "Movie: #{party.movie_title}" %>
+        <%= tag.p "Date: #{party.date}" %>
+        <%= tag.p "Time: #{party.time}" %>
+        <%= button_to "Add to Calendar" unless current_user.parties.include?(party) %>
+      </div>
+      <% end %>
+    </div>
+  <% end %>
+</section>
